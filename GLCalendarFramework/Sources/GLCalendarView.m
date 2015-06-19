@@ -25,6 +25,9 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
 @property (nonatomic, strong) UILongPressGestureRecognizer *dragBeginDateGesture;
 @property (nonatomic, strong) UILongPressGestureRecognizer *dragEndDateGesture;
 
+@property (nonatomic, copy) NSDate *firstDate;
+@property (nonatomic, copy) NSDate *lastDate;
+
 @property (nonatomic) BOOL draggingBeginDate;
 @property (nonatomic) BOOL draggingEndDate;
 
@@ -132,7 +135,7 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
 {
     GLCalendarView *appearance = [[self class] appearance];
     self.padding = appearance.padding ?: DEFAULT_PADDING;
-    self.rowHeight = appearance.rowHeight ?: DEFAULT_ROW_HEIGHT;
+//    self.rowHeight = appearance.rowHeight ?: DEFAULT_ROW_HEIGHT;
     self.weekDayTitleAttributes = appearance.weekDayTitleAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:8], NSForegroundColorAttributeName:[UIColor grayColor]};
     self.monthCoverAttributes = appearance.monthCoverAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:30]};
     self.monthCoverView.textAttributes = self.monthCoverAttributes;
@@ -181,6 +184,14 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
 }
 
 # pragma mark - getter & setter
+
+- (void)setMonthToShow:(NSDate *)monthToShow
+{
+    _monthToShow = monthToShow;
+
+    self.firstDate = [GLDateUtils monthFirstDate: monthToShow];
+    self.lastDate = [GLDateUtils monthLastDate:monthToShow];
+}
 
 - (void)setFirstDate:(NSDate *)firstDate
 {
@@ -244,10 +255,15 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
     } else {
         enlargePoint = ENLARGE_NONE;
     }
-    [cell setDate:date range:[self selectedRangeForDate:date] cellPosition:cellPosition enlargePoint:enlargePoint];
+
+    NSInteger currentMonth = [[GLDateUtils calendar] components:NSCalendarUnitDay|NSCalendarUnitMonth fromDate:self.monthToShow].month;
+    NSInteger cellMonth = [[GLDateUtils calendar] components:NSCalendarUnitDay|NSCalendarUnitMonth fromDate:date].month;
 
     cell.annotation = [self.dataSource annotationForDate:date] ? : @"";
     
+    [cell setDate:date range:[self selectedRangeForDate:date] cellPosition:cellPosition enlargePoint:enlargePoint inCurrentMonth:(currentMonth == cellMonth)];
+
+
     return cell;
 }
 
@@ -321,6 +337,11 @@ static NSString * const CELL_REUSE_IDENTIFIER = @"DayCell";
 - (CGFloat)cellWidth
 {
     return (CGRectGetWidth(self.bounds) - self.padding * 2) / 7;
+}
+
+- (CGFloat)rowHeight
+{
+    return self.cellWidth;
 }
 
 # pragma mark - UIScrollView delegate

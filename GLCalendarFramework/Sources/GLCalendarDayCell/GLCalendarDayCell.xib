@@ -8,17 +8,17 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="GLCalendarDayCell">
-            <rect key="frame" x="0.0" y="0.0" width="54" height="56"/>
+            <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="54" height="56"/>
+                <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HQX-TK-Jgx" userLabel="background cover" customClass="GLCalendarDayCellBackgroundCover">
-                        <rect key="frame" x="0.0" y="0.0" width="54" height="56"/>
+                        <rect key="frame" x="0.0" y="0.0" width="56" height="56"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qzu-El-Gfs" userLabel="day label">
-                        <rect key="frame" x="7" y="8" width="40" height="40"/>
+                        <rect key="frame" x="8" y="8" width="40" height="40"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="dLs-dr-s8d"/>
@@ -29,7 +29,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ih-2e-aSb" userLabel="month label">
-                        <rect key="frame" x="7" y="2" width="40" height="20"/>
+                        <rect key="frame" x="8" y="0.0" width="40" height="20"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="oig-83-yX8"/>
@@ -40,7 +40,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="yDi-Ym-EjD" userLabel="annotation label">
-                        <rect key="frame" x="12" y="34" width="30" height="20"/>
+                        <rect key="frame" x="13" y="36" width="30" height="20"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="30" id="FEq-61-UFb"/>
@@ -57,9 +57,9 @@
             <constraints>
                 <constraint firstAttribute="centerY" secondItem="Qzu-El-Gfs" secondAttribute="centerY" id="JcK-sM-fVt"/>
                 <constraint firstAttribute="centerX" secondItem="Qzu-El-Gfs" secondAttribute="centerX" id="TI3-mt-0qb"/>
-                <constraint firstAttribute="bottom" secondItem="yDi-Ym-EjD" secondAttribute="bottom" constant="2" id="avp-C6-hL0"/>
+                <constraint firstAttribute="bottom" secondItem="yDi-Ym-EjD" secondAttribute="bottom" id="avp-C6-hL0"/>
                 <constraint firstAttribute="centerX" secondItem="yDi-Ym-EjD" secondAttribute="centerX" id="kjn-rh-94T"/>
-                <constraint firstItem="0ih-2e-aSb" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="2" id="m5X-LC-15j"/>
+                <constraint firstItem="0ih-2e-aSb" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="m5X-LC-15j"/>
                 <constraint firstItem="HQX-TK-Jgx" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="oev-3c-MKK"/>
                 <constraint firstAttribute="bottom" secondItem="HQX-TK-Jgx" secondAttribute="bottom" id="otX-B0-VxV"/>
                 <constraint firstItem="HQX-TK-Jgx" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="puQ-V0-Nr0"/>

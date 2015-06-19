@@ -28,6 +28,7 @@
 @property (nonatomic) CELL_POSITION position;
 @property (nonatomic) ENLARGE_POINT enlargePoint;
 @property (nonatomic) BOOL inEdit;
+@property (nonatomic) BOOL inCurrentMonth;
 @property (nonatomic) CGFloat containerPadding;
 @end
 
@@ -42,17 +43,18 @@
 - (void)reloadAppearance
 {
     GLCalendarDayCell *appearance = [[self class] appearance];
-    self.evenMonthBackgroundColor = appearance.evenMonthBackgroundColor ?: UIColorFromRGB(0xf8f8f8);
-    self.oddMonthBackgroundColor = appearance.oddMonthBackgroundColor ?: [UIColor whiteColor];
-    self.dayLabelAttributes = appearance.dayLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:20]};
-    self.futureDayLabelAttributes = appearance.futureDayLabelAttributes ?: self.dayLabelAttributes;
-    self.monthLabelAttributes = appearance.monthLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:8]};
-    self.annotationLabelAttributes = appearance.annotationLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:10]};
-    self.todayLabelAttributes = appearance.todayLabelAttributes ?: @{NSFontAttributeName:[UIFont boldSystemFontOfSize:22]};
+    self.currentMonthBackgroundColor = appearance.currentMonthBackgroundColor ?: UIColorFromRGB(0x202328);
+    self.notCurrentMonthBackgroundColor = appearance.notCurrentMonthBackgroundColor ?: UIColorFromRGB(0x38393D);
+    self.dayLabelAttributes = appearance.dayLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:20], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    self.outsideDateFontColor = UIColorFromRGB(0x6F7072);
+    self.futureDayLabelAttributes = appearance.futureDayLabelAttributes ?: @{NSForegroundColorAttributeName: self.outsideDateFontColor};
+    self.monthLabelAttributes = appearance.monthLabelAttributes ?: @{NSFontAttributeName:[UIFont boldSystemFontOfSize:8], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    self.annotationLabelAttributes = appearance.annotationLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:10], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    self.todayLabelAttributes = appearance.todayLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:20]};
     
     self.backgroundCover.paddingTop = appearance.editCoverPadding ?: 2;
     self.backgroundCover.borderWidth = appearance.editCoverBorderWidth ?: 2;
-    self.backgroundCover.strokeColor = appearance.editCoverBorderColor ?: [UIColor darkGrayColor];
+    self.backgroundCover.strokeColor = appearance.editCoverBorderColor ?: [UIColor whiteColor];
     
     self.backgroundCover.pointSize = appearance.editCoverPointSize ?: 14;
     self.backgroundCover.pointScale = appearance.editCoverPointScale ?: 1.3;
@@ -60,11 +62,11 @@
     RANGE_DISPLAY_MODE mode = appearance.rangeDisplayMode ?: RANGE_DISPLAY_MODE_SINGLE;
     self.backgroundCover.continuousRangeDisplay = mode == RANGE_DISPLAY_MODE_CONTINUOUS ? YES : NO;
     
-    self.todayBackgroundColor = appearance.todayBackgroundColor ?: self.backgroundCover.strokeColor;
+    self.todayBackgroundColor = appearance.todayBackgroundColor ?: UIColorFromRGB(0x202328);
     self.containerPadding = [GLCalendarView appearance].padding;
 }
 
-- (void)setDate:(NSDate *)date range:(GLCalendarDateRange *)range cellPosition:(CELL_POSITION)cellPosition enlargePoint:(ENLARGE_POINT)enlargePoint
+- (void)setDate:(NSDate *)date range:(GLCalendarDateRange *)range cellPosition:(CELL_POSITION)cellPosition enlargePoint:(ENLARGE_POINT)enlargePoint inCurrentMonth:(BOOL)isInCurrentMonth;
 {
     _date = [date copy];
     _range = range;
@@ -75,6 +77,7 @@
     }
     self.position = cellPosition;
     self.enlargePoint = enlargePoint;
+    self.inCurrentMonth = isInCurrentMonth;
     [self updateUI];
 }
 
@@ -83,17 +86,17 @@
 //    NSLog(@"update ui: %@ %d", [GLDateUtils descriptionForDate:self.date], _enlargePoint);
 
     NSDateComponents *components = [[GLDateUtils calendar] components:NSCalendarUnitDay|NSCalendarUnitMonth fromDate:self.date];
-    
+
     NSInteger day = components.day;
     NSInteger month = components.month;
 
     // month background color
-    if (month % 2 == 0) {
-        self.backgroundCover.backgroundColor = self.evenMonthBackgroundColor;
+    if (self.inCurrentMonth) {
+        self.backgroundCover.backgroundColor = self.currentMonthBackgroundColor;
     } else {
-        self.backgroundCover.backgroundColor = self.oddMonthBackgroundColor;
+        self.backgroundCover.backgroundColor = self.notCurrentMonthBackgroundColor;
     }
-    
+
     // adjust background position
     if (self.position == POSITION_LEFT_EDGE) {
         self.backgroundCoverRight.constant = 0;
@@ -115,7 +118,6 @@
     // day label and month label
     if ([self isToday]) {
         self.monthLabel.textColor = [UIColor whiteColor];
-        self.annotationLabel.textColor = [UIColor whiteColor];
         NSDateFormatter *todayFormatter = [[NSDateFormatter alloc] init];
         todayFormatter.dateStyle = NSDateFormatterMediumStyle;
         todayFormatter.timeStyle = NSDateFormatterNoStyle;
@@ -127,22 +129,22 @@
         self.backgroundCover.fillColor = self.todayBackgroundColor;
     } else if (day == 1) {
         self.monthLabel.textColor = [UIColor redColor];
-        self.annotationLabel.textColor = [UIColor redColor];
         [self setMonthLabelText:[self monthText:month]];
         self.dayLabel.textColor = [UIColor redColor];
         [self setDayLabelText:[NSString stringWithFormat:@"%ld", (long)day]];
         self.backgroundCover.isToday = NO;
     } else {
         self.monthLabel.textColor = [UIColor blackColor];
-        self.annotationLabel.textColor = [UIColor blackColor];
         [self setMonthLabelText:@""];
         self.dayLabel.textColor = [UIColor blackColor];
         [self setDayLabelText:[NSString stringWithFormat:@"%ld", (long)day]];
         self.backgroundCover.isToday = NO;
     }
     
-    if ([self isFuture]) {
+    if (!self.inCurrentMonth) {
         [self setFutureDayLabelText:[NSString stringWithFormat:@"%ld", (long)day]];
+        self.monthLabel.textColor = self.outsideDateFontColor;
+        self.annotationLabel.textColor = self.outsideDateFontColor;
     }
     
     // background cover

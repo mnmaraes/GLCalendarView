@@ -138,6 +138,8 @@
         [path closePath];
         [self.fillColor setFill];
         [path fill];
+        [self.strokeColor setStroke];
+        [path stroke];
         return;
     }
     

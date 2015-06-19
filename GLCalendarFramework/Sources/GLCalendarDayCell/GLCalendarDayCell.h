@@ -27,10 +27,11 @@ typedef NS_ENUM(NSInteger, RANGE_DISPLAY_MODE) {
 };
 
 @interface GLCalendarDayCell : UICollectionViewCell
-@property (nonatomic, strong) UIColor *evenMonthBackgroundColor UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIColor *oddMonthBackgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *currentMonthBackgroundColor UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *notCurrentMonthBackgroundColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *dayLabelAttributes UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *futureDayLabelAttributes UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIColor *outsideDateFontColor UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *todayLabelAttributes UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *monthLabelAttributes UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) NSDictionary *annotationLabelAttributes UI_APPEARANCE_SELECTOR;
@@ -48,5 +49,5 @@ typedef NS_ENUM(NSInteger, RANGE_DISPLAY_MODE) {
 @property (nonatomic, readonly) NSDate *date;
 @property (nonatomic, weak, readonly) GLCalendarDateRange *range;
 
-- (void)setDate:(NSDate *)date range:(GLCalendarDateRange *)range cellPosition:(CELL_POSITION)cellPosition enlargePoint:(ENLARGE_POINT)enlargePoint;
+- (void)setDate:(NSDate *)date range:(GLCalendarDateRange *)range cellPosition:(CELL_POSITION)cellPosition enlargePoint:(ENLARGE_POINT)enlargePoint inCurrentMonth:(BOOL)isInCurrentMonth;
 @end

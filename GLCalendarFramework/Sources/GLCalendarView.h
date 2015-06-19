@@ -37,8 +37,7 @@
 @property (nonatomic, strong) UIColor *backToTodayButtonBorderColor UI_APPEARANCE_SELECTOR;
 
 @property (nonatomic, readonly) NSCalendar *calendar;
-@property (nonatomic, copy) NSDate *firstDate;
-@property (nonatomic, copy) NSDate *lastDate;
+@property (nonatomic) NSDate *monthToShow;
 @property (nonatomic, strong) NSMutableArray *ranges;
 @property (nonatomic) BOOL showMaginfier;
 @property (nonatomic, weak) id<GLCalendarViewDelegate> delegate;
