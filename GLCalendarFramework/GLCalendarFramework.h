@@ -21,4 +21,5 @@ FOUNDATION_EXPORT const unsigned char GLCalendarFrameworkVersionString[];
 #import <GLCalendarFramework/GLCalendarDayCellBackgroundCover.h>
 #import <GLCalendarFramework/GLCalendarMonthCoverView.h>
 #import <GLCalendarFramework/GLDateUtils.h>
+#import <GLCalendarFramework/GLCalendarMonthView.h>
 #import <GLCalendarFramework/GLCalendarView.h>

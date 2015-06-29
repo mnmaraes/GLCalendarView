@@ -8,13 +8,13 @@
 
 #import "NSBundle+Framework.h"
 
-#import "GLCalendarView.h"
+#import "GLCalendarMonthView.h"
 
 @implementation NSBundle (Framework)
 
 +(NSBundle *)frameworkBundle
 {
-    return [NSBundle bundleForClass:[GLCalendarView class]];
+    return [NSBundle bundleForClass:[GLCalendarMonthView class]];
 }
 
 @end

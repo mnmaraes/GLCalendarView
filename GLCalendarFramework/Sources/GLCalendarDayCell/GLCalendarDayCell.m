@@ -10,7 +10,7 @@
 #import "GLCalendarDayCellBackgroundCover.h"
 #import "GLCalendarDateRange.h"
 #import "GLDateUtils.h"
-#import "GLCalendarView.h"
+#import "GLCalendarMonthView.h"
 #import "GLCalendarDayCell.h"
 
 #define UIColorFromRGB(rgbValue) \
@@ -50,7 +50,10 @@
     self.futureDayLabelAttributes = appearance.futureDayLabelAttributes ?: @{NSForegroundColorAttributeName: self.outsideDateFontColor};
     self.monthLabelAttributes = appearance.monthLabelAttributes ?: @{NSFontAttributeName:[UIFont boldSystemFontOfSize:8], NSForegroundColorAttributeName: [UIColor whiteColor]};
     self.annotationLabelAttributes = appearance.annotationLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:10], NSForegroundColorAttributeName: [UIColor whiteColor]};
-    self.todayLabelAttributes = appearance.todayLabelAttributes ?: @{NSFontAttributeName:[UIFont systemFontOfSize:20]};
+    self.todayLabelAttributes = appearance.todayLabelAttributes ?:
+  @{
+    NSFontAttributeName:[UIFont systemFontOfSize:20],
+    NSForegroundColorAttributeName: [UIColor whiteColor]};
     
     self.backgroundCover.paddingTop = appearance.editCoverPadding ?: 2;
     self.backgroundCover.borderWidth = appearance.editCoverBorderWidth ?: 2;
@@ -63,7 +66,7 @@
     self.backgroundCover.continuousRangeDisplay = mode == RANGE_DISPLAY_MODE_CONTINUOUS ? YES : NO;
     
     self.todayBackgroundColor = appearance.todayBackgroundColor ?: UIColorFromRGB(0x202328);
-    self.containerPadding = [GLCalendarView appearance].padding;
+    self.containerPadding = [GLCalendarMonthView appearance].padding;
 }
 
 - (void)setDate:(NSDate *)date range:(GLCalendarDateRange *)range cellPosition:(CELL_POSITION)cellPosition enlargePoint:(ENLARGE_POINT)enlargePoint inCurrentMonth:(BOOL)isInCurrentMonth;
