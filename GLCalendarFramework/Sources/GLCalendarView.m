@@ -120,7 +120,7 @@ NSString * const kCalendarCellIdentifier = @"calendarCell";
     cell.delegate = self;
     cell.monthToShow = month;
 
-    if ([[GLDateUtils monthFirstDate:self.selectedDate] isEqualToDate:month]) {
+    if (self.selectedDate && [[GLDateUtils monthFirstDate:self.selectedDate] isEqualToDate:month]) {
         [cell addRangeForDate:self.selectedDate];
         [cell reload];
     }
