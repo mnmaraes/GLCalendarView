@@ -23,7 +23,7 @@
 #pragma mark - Setable Properties
 @property (nonatomic) NSDate *startDate;
 @property (nonatomic) NSDate *endDate;
-@property (nonatomic) id<GLCalendarDelegate> delegate;
+@property (nonatomic, weak) id<GLCalendarDelegate> delegate;
 
 #pragma mark - Actions
 - (void)reload;
