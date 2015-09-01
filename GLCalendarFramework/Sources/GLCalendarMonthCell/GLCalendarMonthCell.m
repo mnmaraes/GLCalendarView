@@ -51,6 +51,15 @@
     }
 }
 
+-(void)prepareForReuse {
+    [super prepareForReuse];
+
+    if (self.range){
+        [self.monthView.ranges removeObject:self.range];
+        self.range = nil;
+    }
+}
+
 -(void)addRangeForDate:(NSDate *)date {
     GLCalendarDateRange *range = [GLCalendarDateRange rangeWithBeginDate:date endDate:date];
     range.backgroundColor = UIColorFromRGB(0x2C77B5);

@@ -76,7 +76,12 @@ NSString * const kCalendarCellIdentifier = @"calendarCell";
 
 #pragma mark - Actions
 - (void)reload {
-    self.showingDate = _showingDate;
+    [self setShowingDate:_showingDate animated:NO];
+//    self.showingDate = _showingDate;
+}
+
+- (void)reloadData {
+    [self.collectionView reloadData];
 }
 
 #pragma mark - Month Delegate
@@ -89,13 +94,12 @@ NSString * const kCalendarCellIdentifier = @"calendarCell";
 }
 
 -(BOOL)canSelectDate:(NSDate *)date {
-    return ([self.startDate compare:date] == NSOrderedAscending || !self.startDate) &&
+    return ([self.initialDate compare:date] != NSOrderedDescending || !self.initialDate) &&
     ([self.endDate compare:date] == NSOrderedDescending || !self.endDate);
 }
 
 -(void)didSelectOutsideDate:(NSDate *)date {
     if ([self canSelectDate:date]) {
-        self.selectedDate = date;
         [self setShowingDate:date animated:true];
     }
 }
@@ -139,27 +143,38 @@ NSString * const kCalendarCellIdentifier = @"calendarCell";
 
     NSDate *newDate = [GLDateUtils dateByAddingMonths:delta toDate:self.showingDate];
 
-    if (delta == -1 && self.startDate && [newDate compare:self.startDate] != NSOrderedDescending) {
-        self.showingDate = self.startDate;
-    } else if (delta == 0 && self.startDate && [newDate compare:self.startDate] == NSOrderedSame) {
-        self.showingDate = [GLDateUtils dateByAddingMonths:1 toDate:self.startDate];
-    } else if (delta == 1 && self.endDate && [newDate compare:self.endDate] != NSOrderedAscending) {
-        self.showingDate = self.endDate;
-    } else if (delta == 0 && self.endDate && [newDate compare:self.endDate] == NSOrderedSame &&
+    if (delta == -1 &&
+        self.startDate &&
+        [newDate compare:self.startDate] != NSOrderedDescending) {
+
+        [self setShowingDate:self.startDate animated:NO];
+
+    } else if (delta == 0 &&
+               self.startDate &&
+               [newDate compare:self.startDate] == NSOrderedSame) {
+
+        [self setShowingDate:[GLDateUtils dateByAddingMonths:1 toDate:self.startDate] animated:NO];
+
+    } else if (delta == 1 &&
+               self.endDate &&
+               [newDate compare:self.endDate] != NSOrderedAscending) {
+
+        [self setShowingDate:self.endDate animated:NO];
+
+    } else if (delta == 0 &&
+               self.endDate &&
+               [newDate compare:self.endDate] == NSOrderedSame &&
                ![self startAndEndAreAdjacent]) {
-        self.showingDate = [GLDateUtils dateByAddingMonths:-1 toDate:self.endDate];
+
+        [self setShowingDate:[GLDateUtils dateByAddingMonths:-1 toDate:self.endDate] animated:NO];
+
     } else {
-        self.showingDate = newDate;
+        
+        [self setShowingDate:newDate animated:NO];
+        
     }
 
     self.collectionView.userInteractionEnabled = YES;
-}
-
--(void)collectionView:(UICollectionView *)collectionView didEndDisplayingCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
-
-    if ([cell isKindOfClass:[GLCalendarMonthCell class]]) {
-        [((GLCalendarMonthCell *)cell) removeRange];
-    }
 }
 
 -(CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -179,9 +194,9 @@ NSString * const kCalendarCellIdentifier = @"calendarCell";
     return _showingDate;
 }
 
--(void)setShowingDate:(NSDate *)showingDate {
-    [self setShowingDate:showingDate animated:NO];
-}
+//-(void)setShowingDate:(NSDate *)showingDate {
+//    [self setShowingDate:showingDate animated:NO];
+//}
 
 -(void)setShowingDate:(NSDate *)showingDate animated:(BOOL)animated {
     if ([showingDate compare:self.startDate] == NSOrderedAscending) {
@@ -194,7 +209,7 @@ NSString * const kCalendarCellIdentifier = @"calendarCell";
 
     NSDate *newDate = [GLDateUtils monthFirstDate:showingDate];
 
-    _showingDate = newDate;
+    self.showingDate = newDate;
 
     if (animated) {
         [self animateTransitionFrom:oldDate to: newDate];

@@ -19,6 +19,7 @@
 
 #pragma mark - Observable Properties
 @property (nonatomic, readonly) NSDate *showingDate;
+@property (nonatomic, readonly) NSDate *selectedDate;
 
 #pragma mark - Setable Properties
 @property (nonatomic) NSDate *startDate;
@@ -27,6 +28,7 @@
 
 #pragma mark - Actions
 - (void)reload;
+- (void)reloadData;
 - (void)setShowingDate:(NSDate *)showingDate animated:(BOOL)animated;
 
 @end
